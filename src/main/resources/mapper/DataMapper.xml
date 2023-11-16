@@ -55,29 +55,4 @@
 		delete from data ;
 	</delete>
 	
-	<select id="showServerID" resultType="com.kbhc.www.VO.DBServerInfoVO">
-		SHOW VARIABLES LIKE 'server_id';
-	</select>
-	
-	<insert id="insertDatabase" parameterType="com.kbhc.www.VO.DatabaseVO">
-
-		INSERT INTO serverlist(server_id, server_name)
-		values (#{server_id}, #{server_name});
-		
-	</insert>
-	
-	<select id="selectDBList" resultType="com.kbhc.www.VO.DatabaseVO">
-		select
-			server_num ,
-			server_id ,
-			concat("DB SERVER ", server_num) AS server_name
-		from serverlist ;
-	</select>
-	
-	<select id="selectDB" parameterType="java.lang.String" resultType="com.kbhc.www.VO.DatabaseVO">
-		SELECT * FROM serverlist 
-		where server_id LIKE #{server_id}
-	</select>
-	
-	
 </mapper>

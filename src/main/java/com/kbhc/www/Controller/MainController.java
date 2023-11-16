@@ -37,13 +37,6 @@ public class MainController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	// 필드 주입이 아닌 생성자 주입형태로 사용합니다. '생성자 주입 형태'로 사용합니다.
-	private final DataService dataService;
-	public MainController(DataService dataService) {
-		super();
-		this.dataService = dataService;
-	}
-	
 	@GetMapping(value = {"index", ""})
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView("index");
