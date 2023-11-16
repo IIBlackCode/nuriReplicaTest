@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+    [템플릿 설명]  
+    - 해당 파일은 SQL 문을 작성하는 곳입니다.
+-->
+<mapper namespace="com.kbhc.www.Mapper.DataMapper">
+
+	<select id="selectDataList" resultType="com.kbhc.www.VO.DataVO">
+		SELECT num,
+			contents,
+			date,
+		FROM data;
+	</select>
+	
+	<insert id="insertData" parameterType="com.kbhc.www.VO.DataVO">
+
+		INSERT INTO data(contents, date, rw)
+		values (#{contents}, #{date}, #{rw});
+		
+	</insert>
+	
+	<select id="selectCountData" resultType="com.kbhc.www.VO.DataInfoVO">
+	
+		SELECT
+			(select count(*) from data where rw = 'WW') as 'LOCAL_WRITE',
+			(select count(*) from data where rw = 'RR') as 'LOCAL_READ',
+			(select count(*) from data where rw = 'W') as 'AS_WRITE',
+			(select count(*) from data where rw = 'R') as 'AS_READ',
+			count(*) as 'TOTAL'
+		FROM data;
+		
+	</select>
+	
+	<select id="selectException" resultType="com.kbhc.www.VO.DataVO">
+		SELECT	
+				num,
+				contents,
+				date,
+				rw
+		FROM 	
+			 data
+		where 
+			contents like 'Exception%'
+		order by num desc
+	</select>
+	
+	<delete id="deleteExceptionData">
+		delete from data
+		where contents like 'Exception%' ;
+	</delete>
+	
+	<delete id="deleteAllData">
+		delete from data ;
+	</delete>
+	
+	<select id="showServerID" resultType="com.kbhc.www.VO.DBServerInfoVO">
+		SHOW VARIABLES LIKE 'server_id';
+	</select>
+	
+	<insert id="insertDatabase" parameterType="com.kbhc.www.VO.DatabaseVO">
+
+		INSERT INTO serverlist(server_id, server_name)
+		values (#{server_id}, #{server_name});
+		
+	</insert>
+	
+	<select id="selectDBList" resultType="com.kbhc.www.VO.DatabaseVO">
+		select
+			server_num ,
+			server_id ,
+			concat("DB SERVER ", server_num) AS server_name
+		from serverlist ;
+	</select>
+	
+	<select id="selectDB" parameterType="java.lang.String" resultType="com.kbhc.www.VO.DatabaseVO">
+		SELECT * FROM serverlist 
+		where server_id LIKE #{server_id}
+	</select>
+	
+	
+</mapper>

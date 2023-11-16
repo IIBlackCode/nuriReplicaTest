@@ -1,0 +1,41 @@
+spring:
+  # MySQL DB 설정
+  datasource:
+    # Resd replica 구성
+    master: # Write(Insert, Update, Delete)
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mysql://kms-mysql.mysql.database.azure.com:3306/test?serverTimezone=UTC
+      read-only: false
+      username: master
+      password: megazone!234
+#      
+    slave:  # Read(Select)
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mysql:loadbalance://kms-mysql-slave1.mysql.database.azure.com:3306,kms-mysql-slave2.mysql.database.azure.com:3306/test?serverTimezone=UTC
+      read-only: true # Slave DB는 Read만
+      username: master
+      password: megazone!234
+    
+  mvc:
+    view:
+      prefix: /WEB-INF/views/   # Controller가 리턴시 앞에붙는 경로 명
+      suffix: .jsp              # Controller가 리턴시 뒤에붙는 경로 명
+  
+  # 화면 자동반영 관련 설정
+  devtools:
+    livereload:
+      enabled: true
+      
+# Mybatis 설정
+mybatis:
+  # default Package location - resultType의 Alias를 지정합니다.
+  type-aliases-package: com.kbhc.blackcode.VO
+  # mapper location - 바라 볼 xml 파일을 지정합니다.
+  mapper-locations: classpath:mapper/*.xml
+  # column name to camel case - 반환 받는 컬럼명을 CamelCase로 받는 설정을 합니다.
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
